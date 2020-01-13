@@ -1,4 +1,4 @@
-# Automating AWS with Python
+# Automating AWS with Python - TIM
 
 Repository for the A Cloud Guru course *Automating AWS with Python*
 
