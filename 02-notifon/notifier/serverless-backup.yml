@@ -6,7 +6,7 @@
 # We've included some commented out config examples here.
 # Just uncomment any of them to get that config option.
 #
-# For full config options, check thes docs:
+# For full config options, check the docs:
 #    docs.serverless.com
 #
 # Happy Coding!
@@ -17,13 +17,23 @@ service: notifon-notifier
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+## Use this for simple intial example / demo
+# provider:
+#   name: aws
+#   runtime: python3.7
+#   # profile: melshman
+#   region: us-east-1
+
+## Use this for full stack / cloudwatch / Lambda demo
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.8.1
   profile: ${file(../config.${self:provider.stage}.json):notifier.profile}
   region: us-east-1
   environment:
     SLACK_WEBHOOK_URL: ${file(../config.${self:provider.stage}.json):notifier.slack_webhook_url}
+
+
 
 # you can overwrite defaults here
 #  stage: dev
@@ -58,6 +68,27 @@ provider:
 #    - exclude-me.py
 #    - exclude-me-dir/**
 
+# functions:
+#   hello:
+#     handler: handler.hello
+
+
+## Use this for simple intial example / demo
+# functions:
+#   hello:
+#     handler: handler.hello
+#     events:
+#       - cloudwatchEvent:
+#           event:
+#             source:
+#               - "aws.autoscaling"
+#             detail-type:
+#               - "EC2 Instance Launch Successful"
+#             detail:
+#               AutoScalingGroupName:
+#                 - "NotifonASgroup"
+
+## Use this for full stack / cloudwatch / Lambda demo
 functions:
   post-to-slack:
     handler: handler.post_to_slack
@@ -71,6 +102,8 @@ functions:
             detail:
               AutoScalingGroupName:
                 - "NotifonASgroup"
+
+
 
 
 
@@ -119,5 +152,6 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 
-plugins:
-  - serverless-python-requirements
+## Use this for full stack / cloudwatch / Lambda demo
+# plugins:
+#   - serverless-python-requirements

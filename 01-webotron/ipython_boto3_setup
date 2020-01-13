@@ -1,0 +1,16 @@
+# coding: utf-8
+import boto3
+session = boto3.Session(profile_name='melshman')
+session
+s3 = session.resource('s3')
+s3
+
+for bucket in s3.buckets.all():
+    print(bucket)
+
+new_bucket = s3.create_bucket(Bucket='aws-automate-new-bucket-tim')
+for bucket in s3.buckets.all():
+    print(bucket)
+
+new_bucket = s3.create_bucket(Bucket='aws-automate-new-bucket-tim', CreateBucketConfiguration={'LocationConstraint':'us-east-1'})
+
