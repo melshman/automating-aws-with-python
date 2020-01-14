@@ -1,7 +1,7 @@
 node_modules/
 
 config.dev.json
-
+*.mp4
 *.pem
 
 # Byte-compiled / optimized / DLL files

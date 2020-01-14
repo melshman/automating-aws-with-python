@@ -3,6 +3,7 @@ service: videolyzer
 provider:
   name: aws
   runtime: python3.6
+  # get value from config.dev.json file
   profile: ${file(../config.${self:provider.stage}.json):videolyzer.profile}
 
   iamRoleStatements:
@@ -33,17 +34,25 @@ provider:
         Fn::GetAtt:
           - VideosTable
           - Arn
-
+  # this environment is offered to the lambda function enviornment during execution
   environment:
+    # references a custom object created in the this file (self) with the name videoTableName
     DYNAMODB_TABLE_NAME: ${self:custom.videosTableName}
     REKOGNITION_SNS_TOPIC_ARN: ${self:custom.rekognitionSNSTopicArn}
     REKOGNITION_ROLE_ARN:
+      # Fn:GetAtt allows you to get an attribute from an existing object defined in the file
       Fn::GetAtt:
         - RekognitionSNSPublishRole
         - Arn
 
 custom:
+  # get value from config.dev.json file
   videosTableName: ${file(../config.${self:provider.stage}.json):videolyzer.videos_table}
+
+  # below builds the SNS ARN using Fn::Join intrisic function capability; also references object
+  # assumption is that 'handleLabelDetectionTopic' is a predefined SNS topic - not automated;
+  # seems like handleLabelDetectionTopic should have been defined in the config.dev.json file, right?
+  # instead of hard coded...
   rekognitionSNSTopicArn:
     Fn::Join:
       - ':'
@@ -52,7 +61,10 @@ custom:
         - sns
         - Ref: AWS::Region
         - Ref: AWS::AccountId
+        # below is hardcoded?
         - handleLabelDetectionTopic
+  # The following constructs a bucket ARN from know format pieces and the unique bucketname
+  # Gets bucket name from the config.dev.json file
   videosBucketArn:
       Fn::Join:
         - ':'
@@ -63,6 +75,7 @@ custom:
           - ''
           - ${file(../config.${self:provider.stage}.json):videolyzer.videos_bucket}
 
+# these are the events that will trigger called lambda functions, called by the handler value
 functions:
   startProcessingVideo:
     handler: handler.start_processing_video
@@ -77,6 +90,7 @@ functions:
     events:
       - sns: handleLabelDetectionTopic
 
+# serverless.yml uses cloudformation scipt below to create resources required for lambda functions
 resources:
   Resources:
     VideosTable:
