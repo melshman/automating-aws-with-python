@@ -1,11 +1,11 @@
 # coding: utf-8
 import boto3
-session = boto3.Session(profile_name='pythonAutomation')
+session = boto3.Session(profile_name='default')
 s3 = session.resource('s3')
-bucket = s3.create_bucket(Bucket='robinvideolyzervideos')
-bucket = s3.create_bucket(Bucket='robinvideolyzervideos', LocationConstraint=session.region_name)
-bucket = s3.create_bucket(Bucket='robinvideolyzervideos')
-bucket = s3.create_bucket(Bucket='robinvideolyzervideos', CreateBucketConfiguration={'LocationConstraint': session.region_name})
+bucket = s3.create_bucket(Bucket='melshmanvideolyzervideos')
+bucket = s3.create_bucket(Bucket='melshmanvideolyzervideos', LocationConstraint=session.region_name)
+bucket = s3.create_bucket(Bucket='melshmanvideolyzervideos')
+bucket = s3.create_bucket(Bucket='melshmanvideolyzervideos', CreateBucketConfiguration={'LocationConstraint': session.region_name})
 from pathlib import Path
 get_ipython().run_line_magic('ls', '/Users/rnorwood/Downloads/*.mp4')
 pathname = '~/Downloads/Blurry Video Of People Working.mp4'
